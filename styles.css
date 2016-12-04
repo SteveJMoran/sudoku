@@ -1,5 +1,2 @@
-input {
-	width: 50px;
-	height: 50px;
-	text-align: center;
-}
+input{width:50px;height:50px;text-align:center;margin-right:1px}.row:nth-child(3n){margin-bottom:5px}.row span:nth-child(3n){margin-right:5px}
+/*# sourceMappingURL=styles.css.map */

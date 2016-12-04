@@ -22,6 +22,35 @@ var sudoku = {
 			}
 		}
 		return row
+	},
+	coords(cell) {
+		cellId = String(cell);
+		x = cellId.charAt(0);
+		y = cellId.charAt(1);
+		z = cellId.charAt(2);
+
+		coords = {
+			x: x,
+			y: y,
+			z: z
+		}
+
+		return coords;
+
+	},
+	lookForDoubles(cell) {
+		cellVal = document.getElementById(cell).value;
+
+		cellCoords = this.coords(cell);
+
+		console.log(cellCoords);
+
+		if(cellVal === ''){
+			console.log('empty'); 
+		} else {
+			console.log(cellVal); 
+		}
+		
 	}
 
 }
@@ -31,8 +60,8 @@ var board = {
 		y: 9
 
 	},
-	init() {
-		this.build(board.config.y, board.config.x);
+	init(x, y) {
+		this.build(y,x);
 	},
 	build(rows, columns) {
 		var board = document.getElementById('board');
@@ -44,29 +73,29 @@ var board = {
 			
 			for(r = 0; r < rows; r++){ 
 				var cell =  document.createElement('span');
-				var x = r + 1;
-				var y = c + 1;
+				var x = c + 1;
+				var y = r + 1;
 
-				if (y <= 3 ) {
-					if (x <= 3){
+				if (x <= 3 ) {
+					if (y <= 3){
 						z = 1;
-					} else if(x <= 6) {
+					} else if(y <= 6) {
 						z = 2;
 					} else {
 						z = 3;
 					}
-				} else if (y > 3 && y <= 6) {
-					if (x <= 3){
+				} else if (x > 3 && x <= 6) {
+					if (y <= 3){
 						z = 4;
-					} else if(x <= 6) {
+					} else if(y <= 6) {
 						z = 5;
 					} else {
 						z = 6;
 					}
 				} else {
-					if (x <= 3){
+					if (y <= 3){
 						z = 7;
-					} else if(x <= 6) {
+					} else if(y <= 6) {
 						z = 8;
 					} else {
 						z = 9;
@@ -82,5 +111,5 @@ var board = {
 	}
 }
 
-board.init();
+board.init(9,9);
 //sudoku.init();
