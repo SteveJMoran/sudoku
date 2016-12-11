@@ -138,15 +138,41 @@ var game = (function(){
 
 var validate = (function() {
 	var rtnMatchedCells = function(cellid) {
+		cellid = cellid.toString();
 		var coords = game.getcoords(cellid);
 		var matchesY = document.querySelectorAll('input[id^="'+coords.y+'"]');
 		var matchesZ = document.querySelectorAll('input[id$="'+coords.z+'"');
-		console.log(matchesY, matchesZ);
+		var nodesArrayY = [].slice.call(matchesY);
+		var nodesArrayZ = [].slice.call(matchesZ);
+		matches = nodesArrayZ.concat(nodesArrayY);
+		matchIds = [];
+		for (i = 0; i < matches.length; i++){
+			console.log(matchIds.indexOf(matches[i].id));
+			
+			if(matches[i].id === cellid) {
+				matches.splice(i,1);
+			} 
+		}
+		return matches;
+	}
+	var check = function(cellid) {
+		var matches = rtnMatchedCells(cellid);
+		var cell = document.getElementById(cellid);
+		var value = cell.value;
+		//console.log(matches.length);
+		for (m = 0; m < matches.length; m++) {
+			matchValue = matches[m].value;
+			if (matchValue == value) {
+				matches[m].value = '';
+			}
+		}
+
+
 	}
 
 	return {
 		init: function() {
-			rtnMatchedCells('221');
+			check('221');
 		}
 	}
 })();
