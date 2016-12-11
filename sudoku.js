@@ -1,70 +1,9 @@
-var sudoku = {
-	config : {
+var board = (function() {
+	// vars
+	var board = document.getElementById('board');
+	// functions
+	var build = function(rows, columns) {
 
-	},
-	init: function() {
-		console.log(this.setArray());
-	},
-	randNum: function(min, max) {
-		floor = min ? Math.ceil(min) : 0;
-		ceiling = max ? Math.floor(max) : 9;
-		return Math.floor(Math.random() * (ceiling - floor + 1)) + floor;
-	},
-	setArray: function() {
-		//creates an array of 9 random numbers that don't repeat
-		var int;
-		var row = [];
-		for (i = 0; 9 > row.length; i++) {
-			int = this.randNum();
-			var add = row.indexOf(int);
-			if (add === -1){
-				row.push(int);
-			}
-		}
-		return row
-	},
-	coords(cell) {
-		cellId = String(cell);
-		x = cellId.charAt(0);
-		y = cellId.charAt(1);
-		z = cellId.charAt(2);
-
-		coords = {
-			x: x,
-			y: y,
-			z: z
-		}
-
-		return coords;
-
-	},
-	lookForDoubles(cell) {
-		cellVal = document.getElementById(cell).value;
-
-		cellCoords = this.coords(cell);
-
-		console.log(cellCoords);
-
-		if(cellVal === ''){
-			console.log('empty'); 
-		} else {
-			console.log(cellVal); 
-		}
-		
-	}
-
-}
-var board = {
-	config: {
-		x: 9,
-		y: 9
-
-	},
-	init(x, y) {
-		this.build(y,x);
-	},
-	build(rows, columns) {
-		var board = document.getElementById('board');
 		for(c = 0; c < columns; c++) {
 			var row =  document.createElement('div');
 			row.className += 'row'; 
@@ -109,7 +48,111 @@ var board = {
 			}
 		}
 	}
-}
+
+	return {
+		init : function(x,y){
+			build(x,y);
+		}
+	}
+
+})();
+
+
+var game = (function(){
+	var board = document.getElementById('board');
+
+	var randNum = function(min, max) {
+		floor = min ? Math.ceil(min) : 1;
+		ceiling = max ? Math.floor(max) : 9;
+		return Math.floor(Math.random() * (ceiling - floor + 1)) + floor;
+	}
+	var	setArray = function() {
+		//creates an array of 9 random numbers that don't repeat
+		var int;
+		var row = [];
+		for (i = 0; 9 > row.length; i++) {
+			int = randNum();
+			var add = row.indexOf(int);
+			if (add === -1){
+				row.push(int);
+			}
+		}
+		i = 0;
+		return row
+	}
+	var	coords = function(cell) {
+		cellId = String(cell);
+		x = cellId.charAt(0);
+		y = cellId.charAt(1);
+		z = cellId.charAt(2);
+
+		coords = {
+			x: x,
+			y: y,
+			z: z
+		}
+		return coords;
+	}
+	var lookForDoubles = function(cell) {
+		cellVal = document.getElementById(cell).value;
+
+		cellCoords = this.coords(cell);
+
+		console.log(cellCoords);
+
+		if(cellVal === ''){
+			console.log('empty'); 
+		} else {
+			console.log(cellVal); 
+		}
+		
+	}
+	var setRow = function(row, load) {
+		var cells = row.childNodes;
+		for (r = 0; r < cells.length; r++) {
+			id = cells[r].children[0].id
+			document.getElementById(id).value = load[r];
+		}
+	}
+	var setBoard = function() {
+		var rows = document.getElementsByClassName('row');
+		for (b = 0; b < rows.length; b++){
+			var load = setArray();
+			var row = rows[b];	
+			setRow(row, load);
+		}
+	}
+
+	/// return ///
+	return {
+		init : function() {
+			setBoard();
+		},
+		getcoords : function(cell) {
+			var get = coords(cell);
+			return get;
+		}
+	}
+
+})();
+
+var validate = (function() {
+	var rtnMatchedCells = function(cellid) {
+		var coords = game.getcoords(cellid);
+		var matchesY = document.querySelectorAll('input[id^="'+coords.y+'"]');
+		var matchesZ = document.querySelectorAll('input[id$="'+coords.z+'"');
+		console.log(matchesY, matchesZ);
+	}
+
+	return {
+		init: function() {
+			rtnMatchedCells('221');
+		}
+	}
+})();
+
+
 
 board.init(9,9);
-//sudoku.init();
+game.init();
+validate.init();
