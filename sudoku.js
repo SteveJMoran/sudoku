@@ -146,6 +146,7 @@ var validate = (function() {
 		var nodesArrayZ = [].slice.call(matchesZ);
 		matches = nodesArrayZ.concat(nodesArrayY);
 		matchIds = [];
+		// fix this
 		for (i = 0; i < matches.length; i++){
 			console.log(matchIds.indexOf(matches[i].id));
 			
